@@ -1,4 +1,5 @@
 from NeuronNetwork import *
+from ..ColorRecognition import main
 
 nn = NeuronNetwork(3, 1)
 
