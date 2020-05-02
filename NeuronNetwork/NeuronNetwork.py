@@ -1,4 +1,4 @@
-from Layer import *
+from NeuronNetwork.Layer import *
 
 class NeuronNetwork:
 
