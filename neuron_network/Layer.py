@@ -1,4 +1,4 @@
-from NeuronNetwork.mathfunction.MathFunction import *
+from .math_function.MathFunction import *
 
 class Layer:
 
