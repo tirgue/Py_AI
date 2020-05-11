@@ -2,8 +2,7 @@ from .Layer import *
 
 class NeuronNetwork:
 
-    def __init__(self,val_max, number_input, number_output, number_of_hidden_layers = 0, length_of_hidden_layers = None):
-        self.val_max = val_max
+    def __init__(self, number_input, number_output, number_of_hidden_layers = 0, length_of_hidden_layers = None):
         
         self.number_of_hidden_layers = number_of_hidden_layers
         self.layers = np.ndarray(number_of_hidden_layers + 2, object)
@@ -19,7 +18,6 @@ class NeuronNetwork:
         self.layers[number_of_hidden_layers].next_layer = self.layers[number_of_hidden_layers + 1]
 
     def compute(self, input):
-        input = input * 10 / self.val_max - 5
         self.layers[0].neurons_value = input
 
         for i in range(1, self.number_of_hidden_layers + 2):
@@ -28,7 +26,6 @@ class NeuronNetwork:
         return self.layers[-1].activation_value()
 
     def train(self, training_input, training_output):
-        training_input = training_input * 10 / self.val_max - 5
         result = self.compute(training_input)
 
         self.layers[-1].delta = (result - training_output) * Sigmoid_dx(self.layers[-1].neurons_value)
@@ -39,3 +36,7 @@ class NeuronNetwork:
         for i in range(1, self.number_of_hidden_layers + 2):
             self.layers[i].neurons_weight = self.layers[i].neurons_weight - np.dot(self.layers[i].delta, self.layers[i - 1].neurons_value.T)
             self.layers[i].biais = self.layers[i].biais - self.layers[i].delta
+
+    @staticmethod
+    def normalise(value, max):
+        return value * 10 / max - 5
