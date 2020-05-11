@@ -13,8 +13,8 @@ class Genetic(object):
         for i in range(nb_population):
             self.population[i] = Individual(NeuronNetwork(neuron_network_params[0], neuron_network_params[1], neuron_network_params[2], neuron_network_params[3]))
 
-    def next_gen(self, mutation_rate):
-        max = self.max_fitness()
+    def next_gen(self, mutation_rate, nb_parent):
+        max = self.max_fitness(nb_parent)
         self.bread(max, mutation_rate)
 
     def max_fitness(self, nb):
