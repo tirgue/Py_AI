@@ -18,12 +18,12 @@ class NeuronNetwork:
         self.layers[number_of_hidden_layers].next_layer = self.layers[number_of_hidden_layers + 1]
 
     def compute(self, input):
-        self.layers[0].neurons_value = input
+        self.layers[0].activation_value = input
 
         for i in range(1, self.number_of_hidden_layers + 2):
             self.layers[i].activate_layer()
 
-        return self.layers[-1].activation_value()
+        return self.layers[-1].activation_value
 
     def train(self, training_input, training_output):
         result = self.compute(training_input)
