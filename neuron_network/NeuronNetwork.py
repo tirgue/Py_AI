@@ -17,9 +17,9 @@ class NeuronNetwork:
         self.layers[number_of_hidden_layers + 1] = Layer(number_output, self.layers[number_of_hidden_layers])
         self.layers[number_of_hidden_layers].next_layer = self.layers[number_of_hidden_layers + 1]
 
-    def compute(self, input):
-        self.layers[0].neurons_value = input
-        self.layers[0].activation_value = input
+    def compute(self, inputs):
+        self.layers[0].neurons_value = inputs
+        self.layers[0].activation_value = inputs
 
         for i in range(1, self.number_of_hidden_layers + 2):
             self.layers[i].activate_layer()
@@ -28,15 +28,15 @@ class NeuronNetwork:
 
     def train(self, training_input, training_output):
         result = self.compute(training_input)
-
-        self.layers[-1].delta = np.expand_dims(np.average((result - training_output) * Sigmoid_dx(self.layers[-1].neurons_value), axis = 0), axis = 0)
+        
+        self.layers[-1].delta = (result - training_output) * Sigmoid_dx(self.layers[-1].neurons_value)
 
         for i in range(self.number_of_hidden_layers, 0, -1):
             self.layers[i].delta = np.dot(self.layers[i + 1].neurons_weight.T, self.layers[i + 1].delta) * Sigmoid_dx(self.layers[i].neurons_value)
 
         for i in range(1, self.number_of_hidden_layers + 2):
             self.layers[i].neurons_weight = self.layers[i].neurons_weight - np.dot(self.layers[i].delta, self.layers[i - 1].neurons_value.T)
-            self.layers[i].biais = self.layers[i].biais - self.layers[i].delta
+            self.layers[i].biais = self.layers[i].biais - np.expand_dims((np.average(self.layers[i].delta, axis = 1)), axis = 1)
 
     @staticmethod
     def normalise(value, max):
